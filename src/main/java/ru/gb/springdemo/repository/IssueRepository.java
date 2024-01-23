@@ -38,17 +38,14 @@ public class IssueRepository {
   }
 
   public boolean bookIsAcceptably(long bookId) {
-
     List<Issue> issueList = getAllOpenIssue();
-    if (issueList.size() == 0) {
-      return true;}
+    if (issueList.size() == 0) {return true;}
     return issueList.stream().noneMatch(x -> x.getBookId() == bookId);
   }
 
   public boolean readerCanTakeBook(long readerId) {
     List<Issue> issueList = getAllOpenIssue();
     if (issueList.size() == 0) {return true;}
-    System.out.println(issueList.stream().filter(x -> x.getReaderId() == readerId).count());
     return issueList.stream().filter(x -> x.getReaderId() == readerId).count() < maxCountBooks;
   }
 
@@ -58,4 +55,7 @@ public class IssueRepository {
             .collect(Collectors.toList());
   }
 
+  public List<Issue> getAllIssue() {
+    return List.copyOf(issues);
+  }
 }

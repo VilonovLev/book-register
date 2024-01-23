@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import ru.gb.springdemo.model.Book;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,4 +41,7 @@ public class BookRepository {
     return books.add(book);
   }
 
+  public List<Book> getAllBooks() {
+    return List.copyOf(books);
+  }
 }

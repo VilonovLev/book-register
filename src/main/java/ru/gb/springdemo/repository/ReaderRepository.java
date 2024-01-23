@@ -40,4 +40,8 @@ public class ReaderRepository {
     return readers.add(reader);
   }
 
+  public List<Reader> getAllReaders() {
+    return List.copyOf(readers);
+  }
+
 }

@@ -1,7 +1,6 @@
 package ru.gb.springdemo.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.gb.springdemo.api.IssueRequest;
 import ru.gb.springdemo.model.Issue;
@@ -11,6 +10,7 @@ import ru.gb.springdemo.repository.ReaderRepository;
 import ru.gb.springdemo.util.IssueRejectedException;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -58,5 +58,9 @@ public class IssuerService {
   public Boolean returnedBook(long issueId) {
     issueRepository.getIssueById(issueId).setReturned_at(LocalDateTime.now());
     return true;
+  }
+
+  public List<Issue> getIssues() {
+    return issueRepository.getAllIssue();
   }
 }

@@ -36,4 +36,8 @@ public class ReaderService {
                 .collect(Collectors.toList());
     }
 
+    public List<Reader> getAllReaders() {
+        return readerRepository.getAllReaders();
+    }
+
 }
