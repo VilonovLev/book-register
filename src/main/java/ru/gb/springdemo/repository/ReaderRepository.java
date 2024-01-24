@@ -2,7 +2,6 @@ package ru.gb.springdemo.repository;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Repository;
-import ru.gb.springdemo.model.Book;
 import ru.gb.springdemo.model.Reader;
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class ReaderRepository {
   }
 
   public boolean addReader(Reader reader) {
-    return readers.add(reader);
+    return readers.add(new Reader(reader.getName()));
   }
 
   public List<Reader> getAllReaders() {

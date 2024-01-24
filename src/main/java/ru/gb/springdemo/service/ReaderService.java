@@ -2,8 +2,10 @@ package ru.gb.springdemo.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.gb.springdemo.model.Book;
 import ru.gb.springdemo.model.Issue;
 import ru.gb.springdemo.model.Reader;
+import ru.gb.springdemo.repository.BookRepository;
 import ru.gb.springdemo.repository.IssueRepository;
 import ru.gb.springdemo.repository.ReaderRepository;
 
@@ -17,6 +19,7 @@ public class ReaderService {
 
     private final ReaderRepository readerRepository;
     private final IssueRepository issueRepository;
+    private final BookRepository bookRepository;
 
     public Boolean addReader(Reader reader) {
         return readerRepository.addReader(reader);
@@ -37,6 +40,13 @@ public class ReaderService {
 
     public List<Reader> getAllReaders() {
         return readerRepository.getAllReaders();
+    }
+
+    public List<Book> getAllBooksReader(long readerId) {
+        return getAllIssueReader(readerId).stream()
+                .mapToLong(Issue::getBookId)
+                .mapToObj(bookRepository::getBookById)
+                .collect(Collectors.toList());
     }
 
 }
