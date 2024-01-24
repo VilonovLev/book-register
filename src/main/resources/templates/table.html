@@ -18,9 +18,11 @@
         <th>Issued</th>
         <th>Returned</th>
     </tr>
-    <tr th:each="model: ${modelList}">
-        <td th:text="${issue.getIssued_at()}"></td>
-        <td th:text="${issue.getReturned_at()}"></td>
+    <tr th:each="row: ${rows}">
+        <td th:text="${row.bookName()}"></td>
+        <td th:text="${row.readerName()}"></td>
+        <td th:text="${row.get()}"></td>
+        <td th:text="${row.set()}"></td>
     </tr>
 </table>
 </body>

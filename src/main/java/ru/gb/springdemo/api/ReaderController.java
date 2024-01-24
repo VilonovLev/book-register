@@ -2,7 +2,6 @@ package ru.gb.springdemo.api;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +30,7 @@ public class ReaderController {
 
     @GetMapping("/{readerId}/issue")
     public ResponseEntity<List<Issue>> getAllIssuesReader(@PathVariable long readerId) {
-        return ResponseEntity.status(HttpStatus.OK).body(readerService.getAllIssueById(readerId));
+        return ResponseEntity.status(HttpStatus.OK).body(readerService.getAllIssueReader(readerId));
     }
 
     @DeleteMapping("/{readerId}")
@@ -42,7 +41,8 @@ public class ReaderController {
     }
 
     @PostMapping
-    public ResponseEntity<Boolean> addReader(@PathVariable Reader reader ) {
+    public ResponseEntity<Boolean> addReader(@RequestBody Reader reader ) {
+        log.info("Запрос на добавления читателя: readerName = {}", reader.getName());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(readerService.addReader(reader));

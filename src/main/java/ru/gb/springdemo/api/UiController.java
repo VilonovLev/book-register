@@ -5,11 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.gb.springdemo.dto.IssueResponseDTO;
 import ru.gb.springdemo.model.Issue;
 import ru.gb.springdemo.service.BookService;
 import ru.gb.springdemo.service.IssuerService;
 import ru.gb.springdemo.service.ReaderService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -34,14 +36,17 @@ public class UiController {
     }
 
     @GetMapping("/issues")
-    public String issues  (Model model) {
-
-        for (Issue issue :issuerService.getIssues()) {
-            model.addAllAttributes(List.of(
-            model.addAttribute("book",bookService.getBookById(issue.getBookId())),
-            model.addAttribute("reader",readerService.getReaderById(issue.getReaderId())),
-            model.addAttribute("issue",issue)));
+    public String issues (Model model) {
+        List<IssueResponseDTO> issueResponseDTOList = new ArrayList<>();
+        for (Issue issue : issuerService.getIssues()) {
+            issueResponseDTOList.add( new IssueResponseDTO(
+                    bookService.getBookById(issue.getBookId()).getName(),
+                    readerService.getReaderById(issue.getReaderId()).getName(),
+                    issue.getIssued_at(),
+                    issue.getReturned_at()
+            ));
         }
+        model.addAttribute("rows",issueResponseDTOList);
         return "table";
     }
 }

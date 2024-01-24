@@ -1,10 +1,7 @@
 package ru.gb.springdemo.repository;
 
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
-import ru.gb.springdemo.api.IssueRequest;
 import ru.gb.springdemo.model.Issue;
 
 import java.util.ArrayList;
@@ -16,15 +13,15 @@ import java.util.stream.Collectors;
 public class IssueRepository {
 
   private final List<Issue> issues;
-  private long maxCountBooks;
 
   public IssueRepository() {
     this.issues = new ArrayList<>();
   }
 
-  @Autowired
-  public void setMaxCountBooks(@Value("${application.max-allowed-books:1}") long maxCountBooks) {
-    this.maxCountBooks = maxCountBooks;
+  @PostConstruct
+  private void init() {
+    issues.add(new Issue(1,1));
+    issues.add(new Issue(2,1));
   }
 
   public void save(Issue issue) {
@@ -35,18 +32,6 @@ public class IssueRepository {
     return issues.stream().filter(it -> Objects.equals(it.getId(), issueId))
             .findFirst()
             .orElse(null);
-  }
-
-  public boolean bookIsAcceptably(long bookId) {
-    List<Issue> issueList = getAllOpenIssue();
-    if (issueList.size() == 0) {return true;}
-    return issueList.stream().noneMatch(x -> x.getBookId() == bookId);
-  }
-
-  public boolean readerCanTakeBook(long readerId) {
-    List<Issue> issueList = getAllOpenIssue();
-    if (issueList.size() == 0) {return true;}
-    return issueList.stream().filter(x -> x.getReaderId() == readerId).count() < maxCountBooks;
   }
 
   public List<Issue> getAllOpenIssue() {

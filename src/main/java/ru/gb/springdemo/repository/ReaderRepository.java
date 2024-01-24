@@ -26,8 +26,7 @@ public class ReaderRepository {
   }
 
   public Reader getReaderById(long id) {
-    return readers.stream()
-            .filter(it -> Objects.equals(it.getId(), id))
+    return readers.stream().filter(it -> Objects.equals(it.getId(), id))
       .findFirst()
       .orElse(null);
   }

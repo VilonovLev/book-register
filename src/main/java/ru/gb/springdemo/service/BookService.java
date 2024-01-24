@@ -16,18 +16,13 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final IssueRepository issueRepository;
-    public Book getBookById(long bookId) {
-        return bookRepository.getBookById(bookId);
-    }
-
-    public Boolean removeBookById(long bookId) {
-        return bookRepository.removeBookById(bookId);
-    }
 
     public Boolean addBook(Book book) {
         return bookRepository.addBook(book);
     }
-
+    public Book getBookById(long bookId) {
+        return bookRepository.getBookById(bookId);
+    }
     public List<Book> getAllAccessibleBooks() {
         List<Long> issueList = issueRepository.getAllOpenIssue().stream()
                 .map(Issue::getBookId)
@@ -36,4 +31,10 @@ public class BookService {
                 .filter(book -> !issueList.contains(book.getId()))
                 .collect(Collectors.toList());
     }
+    public Boolean removeBookById(long bookId) {
+        return bookRepository.removeBookById(bookId);
+    }
+
+
+
 }
