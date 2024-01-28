@@ -34,7 +34,7 @@ public class IssuerController {
     log.info("Возвращение книги: issueId = {}", issueId);
     return ResponseEntity
             .status(HttpStatus.OK)
-            .body(issuerService.returnedBook(issueId));
+            .build();
   }
 
   @PostMapping

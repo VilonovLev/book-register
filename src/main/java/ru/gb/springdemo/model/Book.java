@@ -1,20 +1,21 @@
 package ru.gb.springdemo.model;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.*;
+import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 
-@Data
-@RequiredArgsConstructor
-public class Book implements Serializable {
+@Getter
+@Setter
+@Entity
+@NoArgsConstructor
+public class Book implements Serializable{
 
-  public static long sequence = 1L;
-  private final long id;
-  private final String name;
-
-  public Book(String name) {
-    this(sequence++, name);
-  }
-
+  @Id
+  private long id;
+  private String name;
 }

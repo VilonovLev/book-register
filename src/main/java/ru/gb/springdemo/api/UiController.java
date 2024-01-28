@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.gb.springdemo.dto.IssueResponseDTO;
 import ru.gb.springdemo.model.Issue;
-import ru.gb.springdemo.model.Reader;
 import ru.gb.springdemo.service.BookService;
 import ru.gb.springdemo.service.IssuerService;
 import ru.gb.springdemo.service.ReaderService;
@@ -51,8 +50,8 @@ public class UiController {
             issueResponseDTOList.add( new IssueResponseDTO(
                     bookService.getBookById(issue.getBookId()).getName(),
                     readerService.getReaderById(issue.getReaderId()).getName(),
-                    issue.getIssued_at(),
-                    issue.getReturned_at()
+                    issue.getIssued(),
+                    issue.getReturned()
             ));
         }
         model.addAttribute("rows",issueResponseDTOList);

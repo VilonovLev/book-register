@@ -1,6 +1,7 @@
 package ru.gb.springdemo.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import ru.gb.springdemo.model.Book;
 import ru.gb.springdemo.model.Issue;
@@ -8,6 +9,7 @@ import ru.gb.springdemo.repository.BookRepository;
 import ru.gb.springdemo.repository.IssueRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,22 +19,23 @@ public class BookService {
     private final BookRepository bookRepository;
     private final IssueRepository issueRepository;
 
-    public Boolean addBook(Book book) {
-        return bookRepository.addBook(book);
+    public Book addBook(Book book) {
+        return bookRepository.save(book);
     }
     public Book getBookById(long bookId) {
-        return bookRepository.getBookById(bookId);
+        return bookRepository.findById(bookId).orElseThrow(NoSuchElementException::new);
     }
+    @Query("select * from issue where returned_at=null;")
     public List<Book> getAllAccessibleBooks() {
-        List<Long> issueList = issueRepository.getAllOpenIssue().stream()
+        List<Long> issueList = issueRepository.findByReturned(null).stream()
                 .map(Issue::getBookId)
                 .toList();
-        return bookRepository.getAllBooks().stream()
+        return bookRepository.findAll().stream()
                 .filter(book -> !issueList.contains(book.getId()))
                 .collect(Collectors.toList());
     }
-    public Boolean removeBookById(long bookId) {
-        return bookRepository.removeBookById(bookId);
+    public void removeBookById(long bookId) {
+        bookRepository.deleteById(bookId);
     }
 
 

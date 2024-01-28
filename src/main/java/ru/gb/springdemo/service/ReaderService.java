@@ -10,6 +10,8 @@ import ru.gb.springdemo.repository.IssueRepository;
 import ru.gb.springdemo.repository.ReaderRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -21,31 +23,33 @@ public class ReaderService {
     private final IssueRepository issueRepository;
     private final BookRepository bookRepository;
 
-    public Boolean addReader(Reader reader) {
-        return readerRepository.addReader(reader);
+    public Reader addReader(Reader reader) {
+        return readerRepository.save(reader);
     }
     public Reader getReaderById(long readrId) {
-        return readerRepository.getReaderById(readrId);
+        return readerRepository.findById(readrId)
+                .orElseThrow(NoSuchElementException::new);
     }
-    public Boolean removeReaderById(long readrId) {
-        return readerRepository.removeReaderById(readrId);
+    public void removeReaderById(long readrId) {
+         readerRepository.deleteById(readrId);
     }
 
     public List<Issue> getAllIssueReader(long readerId) {
-        return issueRepository.getAllOpenIssue()
+        return issueRepository.findByReturned(null)
                 .stream()
                 .filter(issue -> issue.getReaderId() == readerId)
                 .collect(Collectors.toList());
     }
 
     public List<Reader> getAllReaders() {
-        return readerRepository.getAllReaders();
+        return readerRepository.findAll();
     }
 
     public List<Book> getAllBooksReader(long readerId) {
         return getAllIssueReader(readerId).stream()
                 .mapToLong(Issue::getBookId)
-                .mapToObj(bookRepository::getBookById)
+                .mapToObj(bookRepository::findById)
+                .map(Optional::get)
                 .collect(Collectors.toList());
     }
 

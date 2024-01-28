@@ -37,11 +37,11 @@ public class ReaderController {
     public ResponseEntity<Boolean> deleteReader(@PathVariable long readerId) {
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
-                .body(readerService.removeReaderById(readerId));
+                .build();
     }
 
     @PostMapping
-    public ResponseEntity<Boolean> addReader(@RequestBody Reader reader ) {
+    public ResponseEntity<Reader> addReader(@RequestBody Reader reader ) {
         log.info("Запрос на добавления читателя: readerName = {}", reader.getName());
         return ResponseEntity
                 .status(HttpStatus.CREATED)

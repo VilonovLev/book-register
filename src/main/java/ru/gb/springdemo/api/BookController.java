@@ -15,10 +15,17 @@ import ru.gb.springdemo.service.BookService;
 @RequiredArgsConstructor
 public class BookController {
 
+    /**
+     * Book service.
+     */
     private final BookService bookService;
 
+    /**
+     * @param bookId - id book
+     * @return ResponseEntity
+     */
     @GetMapping("/{bookId}")
-    public ResponseEntity<Book> getBookInfo (@PathVariable long bookId) {
+    public ResponseEntity<Book> getBookInfo(@PathVariable final long bookId) {
         log.info("Запрос на информацию о книге: bookId = {}", bookId);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -26,16 +33,17 @@ public class BookController {
     }
 
     @DeleteMapping("/{bookId}")
-    public ResponseEntity<Boolean> deleteBook (@PathVariable long bookId) {
+    public ResponseEntity<Boolean> deleteBook(@PathVariable final long bookId) {
         log.info("Запрос на удаления книги: bookId = {}", bookId);
+        bookService.removeBookById(bookId);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
-                .body(bookService.removeBookById(bookId));
+                .build();
     }
 
     @PostMapping
-    public ResponseEntity<Boolean> addBook(@RequestBody Book book) {
-        log.info("Запрос на добавления книги: bookId = {}, bookName = {}", book.getId(),book.getName());
+    public ResponseEntity<Book> addBook(@RequestBody final Book book) {
+        log.info("Запрос на добавления книги: bookId = {}, bookName = {}", book.getId(), book.getName());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(bookService.addBook(book));

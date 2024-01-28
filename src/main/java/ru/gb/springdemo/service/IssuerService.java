@@ -38,25 +38,20 @@ public class IssuerService {
   }
 
   public Issue getIssueById(long issueId) {
-    return issueRepository.getIssueById(issueId);
+    return issueRepository.findById(issueId).orElseThrow(NoSuchElementException::new);
   }
 
-  public Boolean returnedBook(long issueId) {
-    issueRepository.getIssueById(issueId).setReturned_at(LocalDateTime.now());
-    return true;
+  public void returnedBook(long issueId) {
+    issueRepository.findById(issueId).orElseThrow(NoSuchElementException::new).setReturned(LocalDateTime.now());
   }
 
   public List<Issue> getIssues() {
-    return issueRepository.getAllIssue();
+    return issueRepository.findAll();
   }
 
   private void validateRequest(IssueRequest request) throws IssueRejectedException {
-    if (bookRepository.getBookById(request.getBookId()) == null) {
-      throw new NoSuchElementException("Не найдена книга с идентификатором \"" + request.getBookId() + "\"");
-    }
-    if (readerRepository.getReaderById(request.getReaderId()) == null) {
-      throw new NoSuchElementException("Не найден читатель с идентификатором \"" + request.getReaderId() + "\"");
-    }
+    bookRepository.findById(request.getBookId()).orElseThrow(NoSuchElementException::new);
+    readerRepository.findById(request.getReaderId()).orElseThrow(NoSuchElementException::new);
     if (!bookIsAcceptably(request.getBookId())) {
       throw new IssueRejectedException("Нет свободной книги");
     }
@@ -66,13 +61,13 @@ public class IssuerService {
   }
 
   private boolean bookIsAcceptably(long bookId) {
-    List<Issue> issueList = issueRepository.getAllOpenIssue();
+    List<Issue> issueList = issueRepository.findAll();
     if (issueList.size() == 0) {return true;}
     return issueList.stream().noneMatch(x -> x.getBookId() == bookId);
   }
 
   private boolean readerCanTakeBook(long readerId) {
-    List<Issue> issueList = issueRepository.getAllOpenIssue();
+    List<Issue> issueList = issueRepository.findByReturned(null);
     if (issueList.size() == 0) {return true;}
     return issueList.stream().filter(x -> x.getReaderId() == readerId).count() < maxCountBooks;
   }
