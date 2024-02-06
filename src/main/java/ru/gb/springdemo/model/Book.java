@@ -1,11 +1,9 @@
 package ru.gb.springdemo.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
-import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 
@@ -17,5 +15,7 @@ public class Book implements Serializable{
 
   @Id
   private long id;
-  private String name;
+
+  @Schema(maxLength = 255)
+  private String title;
 }

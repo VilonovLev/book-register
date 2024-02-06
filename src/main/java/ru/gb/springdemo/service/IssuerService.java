@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.gb.springdemo.dto.IssueRequest;
+import ru.gb.springdemo.model.dto.IssueRequest;
 import ru.gb.springdemo.model.Issue;
 import ru.gb.springdemo.repository.BookRepository;
 import ru.gb.springdemo.repository.IssueRepository;
@@ -42,7 +42,9 @@ public class IssuerService {
   }
 
   public void returnedBook(long issueId) {
-    issueRepository.findById(issueId).orElseThrow(NoSuchElementException::new).setReturned(LocalDateTime.now());
+    Issue issue = issueRepository.findById(issueId).orElseThrow(NoSuchElementException::new);
+    issue.setReturned(LocalDateTime.now());
+    issueRepository.save(issue);
   }
 
   public List<Issue> getIssues() {

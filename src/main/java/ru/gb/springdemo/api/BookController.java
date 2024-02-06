@@ -1,6 +1,12 @@
 package ru.gb.springdemo.api;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -13,6 +19,7 @@ import ru.gb.springdemo.service.BookService;
 @RestController
 @RequestMapping("/book")
 @RequiredArgsConstructor
+@Tag(name = "book")
 public class BookController {
 
     /**
@@ -25,6 +32,10 @@ public class BookController {
      * @return ResponseEntity
      */
     @GetMapping("/{bookId}")
+    @Operation(summary = "Get information about book")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "Ok"),
+            @ApiResponse(responseCode = "404",description = "Book not found",content = @Content)})
     public ResponseEntity<Book> getBookInfo(@PathVariable final long bookId) {
         log.info("Запрос на информацию о книге: bookId = {}", bookId);
         return ResponseEntity
@@ -33,6 +44,10 @@ public class BookController {
     }
 
     @DeleteMapping("/{bookId}")
+    @Operation(summary = "Delete book from library")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204",description = "Book delete from library"),
+            @ApiResponse(responseCode = "404",description = "Book not found",content = @Content)})
     public ResponseEntity<Boolean> deleteBook(@PathVariable final long bookId) {
         log.info("Запрос на удаления книги: bookId = {}", bookId);
         bookService.removeBookById(bookId);
@@ -42,8 +57,10 @@ public class BookController {
     }
 
     @PostMapping
+    @Operation(summary = "Add book to library")
+    @ApiResponse(responseCode = "201",description = "Book add to library")
     public ResponseEntity<Book> addBook(@RequestBody final Book book) {
-        log.info("Запрос на добавления книги: bookId = {}, bookName = {}", book.getId(), book.getName());
+        log.info("Запрос на добавления книги: bookId = {}, bookName = {}", book.getId(), book.getTitle());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(bookService.addBook(book));

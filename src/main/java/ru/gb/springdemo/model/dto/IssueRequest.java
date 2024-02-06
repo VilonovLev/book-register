@@ -1,5 +1,6 @@
-package ru.gb.springdemo.dto;
+package ru.gb.springdemo.model.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**

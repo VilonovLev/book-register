@@ -1,12 +1,15 @@
 application:
   max-allowed-books: 2
 spring:
+  server:
+    address: http://192.168.0.188
   datasource:
-    url: jdbc:mysql://localhost:3306/book_registry
+    url: jdbc:mysql://localhost:3306/book_registry?createDatabaseIfNotExist=true
     username: root
     password: 11235
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
 

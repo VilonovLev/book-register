@@ -1,10 +1,10 @@
 package ru.gb.springdemo.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,15 +21,20 @@ import java.time.LocalDateTime;
 public class Issue {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
   private long bookId;
   private long readerId;
-  private LocalDateTime issued;
+
+  @Schema(name = "received", type = "date-time")
+  private LocalDateTime received;
+
+  @Schema(name = "returned",type = "date-time")
   private LocalDateTime returned;
 
   public Issue(long bookId, long readerId) {
     this.bookId = bookId;
     this.readerId = readerId;
-    this.issued = LocalDateTime.now();
+    this.received = LocalDateTime.now();
   }
 }
