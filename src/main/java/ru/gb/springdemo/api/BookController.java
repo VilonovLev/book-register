@@ -48,7 +48,7 @@ public class BookController {
     @ApiResponses({
             @ApiResponse(responseCode = "204",description = "Book delete from library"),
             @ApiResponse(responseCode = "404",description = "Book not found",content = @Content)})
-    public ResponseEntity<Boolean> deleteBook(@PathVariable final long bookId) {
+    public ResponseEntity<Void> deleteBook(@PathVariable final long bookId) {
         log.info("Запрос на удаления книги: bookId = {}", bookId);
         bookService.removeBookById(bookId);
         return ResponseEntity

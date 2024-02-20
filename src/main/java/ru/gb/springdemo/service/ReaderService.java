@@ -31,7 +31,8 @@ public class ReaderService {
                 .orElseThrow(NoSuchElementException::new);
     }
     public void removeReaderById(long readrId) {
-         readerRepository.deleteById(readrId);
+        Reader reader = readerRepository.findById(readrId).orElseThrow(NoSuchElementException::new);
+        readerRepository.deleteById(readrId);
     }
 
     public List<Issue> getAllIssueReader(long readerId) {

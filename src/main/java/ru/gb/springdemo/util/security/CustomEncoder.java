@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public clas:s CustomEncoder implements PasswordEncoder {
+public class CustomEncoder implements PasswordEncoder {
     @Override
     public String encode(CharSequence rawPassword) {
         return String.valueOf(rawPassword);

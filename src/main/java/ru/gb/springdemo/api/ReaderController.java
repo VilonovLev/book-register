@@ -27,6 +27,16 @@ public class ReaderController {
 
     private final ReaderService readerService;
 
+    @PostMapping
+    @Operation(summary = "Add reader to library")
+    @ApiResponse(responseCode = "201",description = "Reader add to library")
+    public ResponseEntity<Reader> addReader(@RequestBody String readerName ) {
+        log.info("Запрос на добавления читателя: readerName = {}", readerName);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(readerService.addReader(new Reader(readerName)));
+    }
+
     @GetMapping("/{readerId}")
     @Operation(summary = "Get information about reader")
     @ApiResponses({
@@ -61,13 +71,4 @@ public class ReaderController {
                 .build();
     }
 
-    @PostMapping
-    @Operation(summary = "Add reader to library")
-    @ApiResponse(responseCode = "201",description = "Reader add to library")
-    public ResponseEntity<Reader> addReader(@RequestBody String readerName ) {
-        log.info("Запрос на добавления читателя: readerName = {}", readerName);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(readerService.addReader(new Reader(readerName)));
-    }
 }

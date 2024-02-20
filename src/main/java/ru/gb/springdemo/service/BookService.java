@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class BookService {
-
+    
     private final BookRepository bookRepository;
     private final IssueRepository issueRepository;
 
@@ -23,7 +23,8 @@ public class BookService {
         return bookRepository.save(book);
     }
     public Book getBookById(long bookId) {
-        return bookRepository.findById(bookId).orElseThrow(NoSuchElementException::new);
+        return bookRepository.findById(bookId)
+                .orElseThrow(NoSuchElementException::new);
     }
     @Query("select * from issue where returned_at=null;")
     public List<Book> getAllAccessibleBooks() {
@@ -35,7 +36,8 @@ public class BookService {
                 .collect(Collectors.toList());
     }
     public void removeBookById(long bookId) {
-        bookRepository.deleteById(bookId);
+        Book book = bookRepository.findById(bookId).orElseThrow(NoSuchElementException::new);
+        bookRepository.delete(book);
     }
 
 

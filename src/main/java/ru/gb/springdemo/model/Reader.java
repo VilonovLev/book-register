@@ -6,10 +6,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
+import ru.gb.springdemo.util.aop.Timer;
 
 @Getter
 @Setter
 @Entity
+@Timer
+@EqualsAndHashCode
 @NoArgsConstructor
 public class Reader {
 
@@ -22,5 +25,13 @@ public class Reader {
 
   public Reader(String name) {
     this.name = name;
+  }
+
+  @Override
+  public String toString() {
+    return "Reader{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            '}';
   }
 }

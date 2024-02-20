@@ -6,17 +6,16 @@ import lombok.Data;
 /**
  * Запрос на выдачу
  */
-@Data
-public class IssueRequest {
+public record IssueRequest(long readerId, long bookId) {
 
-  /**
-   * Идентификатор читателя
-   */
-  private long readerId;
-
-  /**
-   * Идентификатор книги
-   */
-  private long bookId;
+//  /**
+//   * Идентификатор читателя
+//   */
+//  private long readerId;
+//
+//  /**
+//   * Идентификатор книги
+//   */
+//  private long bookId;
 
 }

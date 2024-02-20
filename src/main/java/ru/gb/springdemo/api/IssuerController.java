@@ -59,11 +59,9 @@ public class IssuerController {
           @ApiResponse(responseCode = "404",description = "Incorrect request data",content = @Content),
           @ApiResponse(responseCode = "403",description = "You are denied or there is no book available",content = @Content)})
   public ResponseEntity<Issue> issueBook(@RequestBody IssueRequest request) {
-    log.info("Получен запрос на выдачу: readerId = {}, bookId = {}", request.getReaderId(), request.getBookId());
-
-    final Issue issue;
+    log.info("Получен запрос на выдачу: readerId = {}, bookId = {}", request.readerId(), request.bookId());
     try {
-      issue = issuerService.issue(request);
+      issuerService.validateRequest(request);
     } catch (NoSuchElementException e) {
       log.info("Запрос на выдачу отклонен причина: {}", e.getMessage());
       return ResponseEntity.notFound().build();
@@ -71,8 +69,8 @@ public class IssuerController {
       log.info("Запрос на выдачу отклонен причина: {}", e.getMessage());
       return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
-
-    return ResponseEntity.status(HttpStatus.OK).body(issue);
+    return ResponseEntity.status(HttpStatus.OK).body(issuerService.addIssue(request));
   }
+
 
 }

@@ -10,6 +10,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
+@EqualsAndHashCode
+@AllArgsConstructor
 @NoArgsConstructor
 public class Book implements Serializable{
 
