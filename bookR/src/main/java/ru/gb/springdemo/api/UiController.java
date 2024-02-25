@@ -1,5 +1,6 @@
 package ru.gb.springdemo.api;
 
+import com.example.aop.Timer;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,6 @@ import ru.gb.springdemo.model.Issue;
 import ru.gb.springdemo.service.BookService;
 import ru.gb.springdemo.service.IssuerService;
 import ru.gb.springdemo.service.ReaderService;
-import ru.gb.springdemo.util.aop.Timer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,22 +26,21 @@ public class UiController {
     private final BookService bookService;
     private final ReaderService readerService;
     private final IssuerService issuerService;
-
-    @Timer()
+    @Timer
     @GetMapping("/books")
     public String available(Model model) {
         model.addAttribute("books",bookService.getAllAccessibleBooks());
         return "available";
     }
 
-    @Timer()
+
     @GetMapping("/readers")
     public String readers(Model model) {
         model.addAttribute("readers", readerService.getAllReaders());
         return "readers";
     }
 
-    @Timer()
+
     @GetMapping("/readers/{id}")
     public String readers(@PathVariable long id, Model model) {
         model.addAttribute("reader", readerService.getReaderById(id));
@@ -49,7 +48,7 @@ public class UiController {
         return "reader_books";
     }
 
-    @Timer()
+
     @GetMapping("/issues")
     public String issues (Model model) {
         List<IssueResponse> issueResponseList = new ArrayList<>();

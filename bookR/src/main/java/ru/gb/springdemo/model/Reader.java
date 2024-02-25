@@ -6,12 +6,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
-import ru.gb.springdemo.util.aop.Timer;
+
 
 @Getter
 @Setter
 @Entity
-@Timer
 @EqualsAndHashCode
 @NoArgsConstructor
 public class Reader {

@@ -1,4 +1,4 @@
-package ru.gb.springdemo.util.aop;
+package com.example.aop;
 
 
 import java.lang.annotation.ElementType;
